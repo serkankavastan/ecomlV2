@@ -1,0 +1,40 @@
+name: ci_backend
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "master"
+    path:
+      - "backend/**"
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: azure cli login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup DotNet Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: build
+        run: |
+          cd backend
+
+          dotnet restore
+          dotnet build --no-restore
+          dotnet publish --configuration release --output ./published
+
+      - name : deploye
+        uses: azure/webapps-deploye@v2
+        with:
+          app-name: "ecomlproject-web"
+          package: "./backend/published"
+
+
