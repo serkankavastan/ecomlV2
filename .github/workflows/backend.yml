@@ -32,7 +32,7 @@ jobs:
           dotnet publish --configuration release --output ./published
 
       - name : deploye
-        uses: azure/webapps-deploye@v2
+        uses: azure/webapps-deploy@v2
         with:
           app-name: "ecomlproject-web"
           package: "./backend/published"
