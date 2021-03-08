@@ -45,7 +45,6 @@ namespace backend
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();
